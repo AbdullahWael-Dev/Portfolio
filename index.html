@@ -6,7 +6,7 @@
   <title>Abdallah Wael — Backend Developer</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=VT323&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=VT323&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet"/>
 
   <style>
     /* ─── CSS Variables ──────────────────────────────────────────── */
@@ -52,10 +52,17 @@
     [data-theme="light"] .hero-badge .dot { background: #0a7a56; }
 
     [data-theme="light"] .hero-code-block {
-      background: #1e2130;
-      border-color: rgba(0,0,0,.15);
-      box-shadow: 0 8px 40px rgba(0,0,0,.14);
+      background: #ffffff !important;
+      border-color: rgba(0,0,0,.12);
+      box-shadow: 0 8px 40px rgba(0,0,0,.1);
+      color: #1e2130;
     }
+    [data-theme="light"] .c-key { color: #7c3aed; }
+    [data-theme="light"] .c-fn  { color: #1d4ed8; }
+    [data-theme="light"] .c-str { color: #0a7a56; }
+    [data-theme="light"] .c-com { color: #6b7280; }
+    [data-theme="light"] .c-sym { color: #0891b2; }
+    [data-theme="light"] .cursor-blink { background: #0a7a56; }
 
     [data-theme="light"] .btn-outline-custom {
       border-color: rgba(0,0,0,.18);
@@ -166,11 +173,11 @@
     .navbar.scrolled { box-shadow: 0 2px 40px rgba(0,0,0,.25); }
 
     .navbar-brand {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-weight: 800;
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       color: var(--text-color) !important;
-      letter-spacing: -.02em;
+      letter-spacing: -.03em;
     }
     .navbar-brand span { color: var(--primary-color); }
 
@@ -278,15 +285,17 @@
     }
 
     .hero-name {
-      font-size: clamp(2.6rem, 6.5vw, 5rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -.04em;
+      font-family: 'VT323', monospace;
+      font-size: clamp(2.8rem, 6.5vw, 5.2rem);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: .1em;
       background: linear-gradient(135deg, var(--text-color) 40%, var(--primary-color));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       margin-bottom: .5rem;
+      white-space: nowrap;
     }
 
     .hero-title {
@@ -410,10 +419,11 @@
     }
 
     .section-title {
-      font-size: clamp(1.9rem, 4vw, 2.8rem);
-      font-weight: 800;
-      letter-spacing: -.03em;
-      line-height: 1.1;
+      font-family: 'VT323', monospace;
+      font-size: clamp(2.4rem, 4.5vw, 3.2rem);
+      font-weight: 400;
+      letter-spacing: .08em;
+      line-height: 1.05;
     }
 
     .section-divider {
@@ -558,6 +568,16 @@
       font-weight: 700;
       letter-spacing: -.01em;
       margin-bottom: 0;
+      display: flex; align-items: center; gap: .55rem;
+    }
+    .ptitle-dots {
+      display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0;
+    }
+    .ptitle-dots .dot-r,
+    .ptitle-dots .dot-y,
+    .ptitle-dots .dot-g {
+      display: inline-block;
+      width: 8px; height: 8px; border-radius: 50%;
     }
 
     .project-body { padding: 1.25rem 1.75rem; flex: 1; }
@@ -840,7 +860,7 @@
             <span class="dot"></span>
             Available for opportunities
           </div>
-          <h1 class="hero-name hero-animate hero-d2">Abdallah<br>Wael</h1>
+          <h1 class="hero-name hero-animate hero-d2">Abdallah Wael</h1>
           <p class="hero-title hero-animate hero-d3">Backend Developer&nbsp;&nbsp;|&nbsp;&nbsp;Laravel Specialist</p>
           <p class="hero-desc hero-animate hero-d4">
             I build scalable APIs and robust backend systems using Laravel and modern PHP practices.
@@ -849,7 +869,7 @@
             <a href="#projects" class="btn-primary-custom">
               <i class="bi bi-grid-3x3-gap-fill"></i> View Projects
             </a>
-            <a href="https://github.com/" target="_blank" rel="noopener" class="btn-outline-custom">
+            <a href="https://github.com/AbdullahWael-Dev" target="_blank" rel="noopener" class="btn-outline-custom">
               <i class="bi bi-github"></i> GitHub Profile
             </a>
           </div>
@@ -881,7 +901,7 @@
 
         <div class="col-lg-5 fade-up">
           <p class="section-tag">// about me</p>
-          <h2 class="section-title" style="font-family:'VT323',monospace; font-size:clamp(2.8rem,5vw,4rem); font-weight:400; letter-spacing:.08em; line-height:1.05;">Crafting robust<br>backend systems</h2>
+          <h2 class="section-title">Crafting robust<br>backend systems</h2>
           <div class="section-divider mb-4"></div>
           <p style="color:var(--text-muted);line-height:1.8;font-size:.95rem;" class="mb-4">
             I'm a passionate Backend Developer specializing in Laravel and PHP. I thrive on building clean, maintainable architectures that power real-world applications — from REST APIs to complex database designs.
@@ -1051,7 +1071,7 @@
             <div class="project-header">
               <div class="project-number">01</div>
               <div class="project-icon"><i class="bi bi-hospital"></i></div>
-              <h3 class="project-title">Hospital Management System</h3>
+              <h3 class="project-title"><span class="ptitle-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></span>Hospital Management System</h3>
             </div>
             <div class="project-body">
               <p class="project-desc">A comprehensive system for managing patients, appointments, doctors, billing, and medical records. Features role-based access control for admins, doctors, and staff with real-time scheduling.</p>
@@ -1064,7 +1084,7 @@
               </div>
             </div>
             <div class="project-footer">
-              <a href="https://github.com/" target="_blank" rel="noopener" class="btn-project btn-project-primary">
+              <a href="https://github.com/AbdullahWael-Dev/hospital-management-system" target="_blank" rel="noopener" class="btn-project btn-project-primary">
                 <i class="bi bi-github"></i> View Code
               </a>
               <a href="projects/hospital.html" class="btn-project btn-project-details">
@@ -1080,7 +1100,7 @@
             <div class="project-header">
               <div class="project-number">02</div>
               <div class="project-icon"><i class="bi bi-cart3"></i></div>
-              <h3 class="project-title">E-commerce System</h3>
+              <h3 class="project-title"><span class="ptitle-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></span>E-commerce System</h3>
             </div>
             <div class="project-body">
               <p class="project-desc">Full-featured e-commerce backend with product catalog management, order processing, inventory tracking, payment gateway integration, and dynamic discount/coupon engine.</p>
@@ -1093,7 +1113,7 @@
               </div>
             </div>
             <div class="project-footer">
-              <a href="https://github.com/" target="_blank" rel="noopener" class="btn-project btn-project-primary">
+              <a href="https://github.com/AbdullahWael-Dev/E-commerce" target="_blank" rel="noopener" class="btn-project btn-project-primary">
                 <i class="bi bi-github"></i> View Code
               </a>
               <a href="projects/ecommerce.html" class="btn-project btn-project-details">
@@ -1111,7 +1131,7 @@
             <div class="project-header">
               <div class="project-number">03</div>
               <div class="project-icon"><i class="bi bi-receipt"></i></div>
-              <h3 class="project-title">Invoice Management System</h3>
+              <h3 class="project-title"><span class="ptitle-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></span>Invoice Management System</h3>
             </div>
             <div class="project-body">
               <p class="project-desc">A comprehensive invoice management platform with smart dashboard, payment tracking, attachment handling, advanced reporting, and Excel export — powered by Spatie permissions.</p>
@@ -1124,7 +1144,7 @@
               </div>
             </div>
             <div class="project-footer">
-              <a href="https://github.com/" target="_blank" rel="noopener" class="btn-project btn-project-primary">
+              <a href="https://github.com/AbdullahWael-Dev/Invoice-System" target="_blank" rel="noopener" class="btn-project btn-project-primary">
                 <i class="bi bi-github"></i> View Code
               </a>
               <a href="projects/invoice.html" class="btn-project btn-project-details">
@@ -1140,7 +1160,7 @@
             <div class="project-header">
               <div class="project-number">04</div>
               <div class="project-icon"><i class="bi bi-robot"></i></div>
-              <h3 class="project-title">Laravel File AI Processor</h3>
+              <h3 class="project-title"><span class="ptitle-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></span>Laravel File AI Processor</h3>
             </div>
             <div class="project-body">
               <p class="project-desc">Upload a PDF, DOCX, or TXT file and get back an AI-processed summary via OpenRouter (GPT-4, Claude, Mistral). Export results as PDF or Word. Google OAuth login via Socialite.</p>
@@ -1153,10 +1173,10 @@
               </div>
             </div>
             <div class="project-footer">
-              <a href="https://github.com/" target="_blank" rel="noopener" class="btn-project btn-project-primary">
+              <a href="https://github.com/AbdullahWael-Dev/file-ai-processor" target="_blank" rel="noopener" class="btn-project btn-project-primary">
                 <i class="bi bi-github"></i> View Code
               </a>
-              <a href="projects/file-ai.html" class="btn-project btn-project-details">
+              <a href="projects/fila-ai.html" class="btn-project btn-project-details">
                 <i class="bi bi-layers"></i> View Details
               </a>
             </div>
@@ -1424,13 +1444,11 @@
 
       function nextLine() {
         if (lineIdx >= codeLines.length) {
-          // All done — cursor stays blinking on last line
           return;
         }
         typeLine(codeLines[lineIdx++]);
       }
 
-      // Start after hero entry animations settle
       setTimeout(nextLine, 950);
     }
 

@@ -6,10 +6,9 @@
   <title>Hospital Management System — Abdallah Wael</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=VT323&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet"/>
 
   <style>
-    /* ─── Variables ─────────────────────────────────────────────── */
     :root {
       --primary-color: #00e5a0;
       --primary-dim: rgba(0,229,160,.12);
@@ -37,8 +36,6 @@
       --primary-dim: rgba(0,180,120,.1);
       --primary-glow: rgba(0,180,120,.25);
     }
-
-    /* ── Light mode overrides ───────────────────────────────────── */
     [data-theme="light"] .content-card  { background: #ffffff; border-color: rgba(0,0,0,.09); }
     [data-theme="light"] .meta-pill     { background: #f8faff; border-color: rgba(0,0,0,.09); }
     [data-theme="light"] .arch-highlight{ background: rgba(0,180,120,.08); border-color: rgba(0,180,120,.18); }
@@ -46,8 +43,19 @@
     [data-theme="light"] .tech-pill     { background: rgba(0,180,120,.09); border-color: rgba(0,180,120,.2); }
     [data-theme="light"] .gallery-slot  { background: #e8ebf4; }
     [data-theme="light"] footer         { background: #ffffff; }
+    [data-theme="light"] .hero-code-block {
+      background: #ffffff !important;
+      border-color: rgba(0,0,0,.12);
+      box-shadow: 0 8px 40px rgba(0,0,0,.1);
+      color: #1e2130;
+    }
+    [data-theme="light"] .c-key-h { color: #7c3aed; }
+    [data-theme="light"] .c-fn-h  { color: #1d4ed8; }
+    [data-theme="light"] .c-str-h { color: #0a7a56; }
+    [data-theme="light"] .c-com-h { color: #6b7280; }
+    [data-theme="light"] .c-sym-h { color: #0891b2; }
+    [data-theme="light"] .cursor-h { background: #0a7a56; }
 
-    /* ─── Base ──────────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -64,491 +72,203 @@
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: var(--background-color); }
     ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 3px; }
-
-    /* Noise overlay */
     body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
     }
 
-    /* ─── Navbar ─────────────────────────────────────────────────── */
-    .navbar {
-      background: var(--nav-bg) !important;
-      backdrop-filter: blur(18px) saturate(160%);
-      border-bottom: 1px solid var(--border-color);
-      padding: .85rem 0;
-    }
-    .navbar-brand {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.2rem;
-      color: var(--text-color) !important;
-      text-decoration: none;
-      letter-spacing: -.02em;
-    }
+    .navbar { background: var(--nav-bg) !important; backdrop-filter: blur(18px) saturate(160%); border-bottom: 1px solid var(--border-color); padding: .85rem 0; }
+    .navbar-brand { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--text-color) !important; text-decoration: none; letter-spacing: -.03em; }
     .navbar-brand span { color: var(--primary-color); }
-    #themeToggle {
-      background: var(--surface-2);
-      border: 1px solid var(--border-color);
-      color: var(--text-color);
-      width: 36px; height: 36px;
-      border-radius: 9px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: .95rem;
-      transition: background var(--transition), color var(--transition), transform .2s;
-    }
+    #themeToggle { background: var(--surface-2); border: 1px solid var(--border-color); color: var(--text-color); width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: .95rem; transition: background var(--transition), color var(--transition), transform .2s; }
     #themeToggle:hover { background: var(--primary-dim); color: var(--primary-color); transform: rotate(18deg); }
 
-    /* ─── Hero Band ──────────────────────────────────────────────── */
-    .project-hero {
-      position: relative;
-      padding: 30px 0 60px;
-      overflow: hidden;
-    }
-    .hero-blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(90px);
-      opacity: .14;
-      pointer-events: none;
-    }
+    .project-hero { position: relative; padding: 30px 0 60px; overflow: hidden; }
+    .hero-blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .14; pointer-events: none; }
     .hero-blob-1 { width: 500px; height: 500px; background: var(--primary-color); top: -200px; right: -150px; }
     .hero-blob-2 { width: 300px; height: 300px; background: #6366f1; bottom: -100px; left: -80px; }
 
-    .back-link {
-      display: inline-flex; align-items: center; gap: .45rem;
-      color: var(--text-muted); text-decoration: none;
-      font-size: .85rem; font-weight: 500;
-      padding: .4rem .85rem;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      transition: color .2s, border-color .2s, background .2s;
-      margin-bottom: 2.5rem;
-    }
+    .back-link { display: inline-flex; align-items: center; gap: .45rem; color: var(--text-muted); text-decoration: none; font-size: .85rem; font-weight: 500; padding: .4rem .85rem; border: 1px solid var(--border-color); border-radius: 8px; transition: color .2s, border-color .2s, background .2s; margin-bottom: 2.5rem; }
     .back-link:hover { color: var(--primary-color); border-color: var(--primary-color); background: var(--primary-dim); }
 
-    .project-category-tag {
-      display: inline-flex; align-items: center; gap: .45rem;
-      background: var(--primary-dim);
-      border: 1px solid rgba(0,229,160,.25);
-      color: var(--primary-color);
-      font-family: 'DM Mono', monospace;
-      font-size: .72rem;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      padding: .3rem .8rem;
-      border-radius: 999px;
-      margin-bottom: 1.25rem;
-    }
+    .project-category-tag { display: inline-flex; align-items: center; gap: .45rem; background: var(--primary-dim); border: 1px solid rgba(0,229,160,.25); color: var(--primary-color); font-family: 'DM Mono', monospace; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; padding: .3rem .8rem; border-radius: 999px; margin-bottom: 1.25rem; }
 
     .project-main-title {
-      font-size: clamp(2.2rem, 5vw, 3.5rem);
-      font-weight: 800;
-      letter-spacing: -.03em;
-      line-height: 1.1;
+      font-family: 'VT323', monospace;
+      font-size: clamp(2.6rem, 5.5vw, 4rem);
+      font-weight: 400;
+      letter-spacing: .08em;
+      line-height: 1.05;
       margin-bottom: 1rem;
     }
 
-    .project-subtitle {
-      font-size: 1.05rem;
-      color: var(--text-muted);
-      max-width: 600px;
-      line-height: 1.75;
-      margin-bottom: 2rem;
-    }
+    .project-subtitle { font-size: 1.05rem; color: var(--text-muted); max-width: 600px; line-height: 1.75; margin-bottom: 2rem; }
 
-    /* Meta pills row */
     .meta-row { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; }
-    .meta-pill {
-      display: flex; align-items: center; gap: .5rem;
-      background: var(--surface-color);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: .55rem 1rem;
-      font-size: .82rem;
-    }
+    .meta-pill { display: flex; align-items: center; gap: .5rem; background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 10px; padding: .55rem 1rem; font-size: .82rem; }
     .meta-pill i { color: var(--primary-color); }
     .meta-pill-label { color: var(--text-faint); margin-right: .2rem; }
     .meta-pill-value { font-weight: 600; color: var(--text-color); }
 
-    /* Action buttons */
-    .btn-gh {
-      display: inline-flex; align-items: center; gap: .5rem;
-      background: var(--primary-color);
-      color: #0a0d14;
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: .875rem;
-      padding: .7rem 1.6rem;
-      border-radius: 10px;
-      border: none;
-      text-decoration: none;
-      transition: filter .2s, transform .2s, box-shadow .2s;
-    }
+    .btn-gh { display: inline-flex; align-items: center; gap: .5rem; background: var(--primary-color); color: #0a0d14; font-family: 'Syne', sans-serif; font-weight: 700; font-size: .875rem; padding: .7rem 1.6rem; border-radius: 10px; border: none; text-decoration: none; transition: filter .2s, transform .2s, box-shadow .2s; }
     .btn-gh:hover { color: #0a0d14; filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 6px 24px var(--primary-glow); }
 
-    /* ─── Content Layout ─────────────────────────────────────────── */
     .page-content { padding-bottom: 100px; }
 
-    .content-card {
-      background: var(--surface-color);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 2rem 2.25rem;
-      margin-bottom: 1.5rem;
-      position: relative;
-      overflow: hidden;
-      transition: border-color var(--transition);
-    }
+    .content-card { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 2rem 2.25rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; transition: border-color var(--transition); }
     .content-card:hover { border-color: rgba(0,229,160,.2); }
-    .content-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, var(--primary-color), transparent);
-      transform: scaleX(0); transform-origin: left;
-      transition: transform .4s ease;
-    }
+    .content-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--primary-color), transparent); transform: scaleX(0); transform-origin: left; transition: transform .4s ease; }
     .content-card:hover::before { transform: scaleX(1); }
 
     .card-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.25rem;
-      font-weight: 700;
+      font-family: 'VT323', monospace;
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: .06em;
       margin-bottom: 1.25rem;
       display: flex; align-items: center; gap: .6rem;
     }
     .card-title i { color: var(--primary-color); font-size: 1.1rem; }
 
-    /* Tech stack pills */
-    .tech-pill {
-      display: inline-flex; align-items: center; gap: .35rem;
-      background: var(--primary-dim);
-      border: 1px solid rgba(0,229,160,.2);
-      color: var(--text-color);
-      font-size: .78rem;
-      font-weight: 500;
-      padding: .35rem .8rem;
-      border-radius: 8px;
-      margin: .25rem;
-      font-family: 'DM Mono', monospace;
-      transition: background .2s, color .2s;
-    }
+    .tech-pill { display: inline-flex; align-items: center; gap: .35rem; background: var(--primary-dim); border: 1px solid rgba(0,229,160,.2); color: var(--text-color); font-size: .78rem; font-weight: 500; padding: .35rem .8rem; border-radius: 8px; margin: .25rem; font-family: 'DM Mono', monospace; transition: background .2s, color .2s; }
     .tech-pill:hover { background: var(--primary-color); color: #0a0d14; }
 
-    /* Feature list */
     .feat-list { list-style: none; }
-    .feat-list li {
-      display: flex; align-items: flex-start; gap: .75rem;
-      padding: .7rem 0;
-      border-bottom: 1px solid var(--border-color);
-      font-size: .9rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
+    .feat-list li { display: flex; align-items: flex-start; gap: .75rem; padding: .7rem 0; border-bottom: 1px solid var(--border-color); font-size: .9rem; color: var(--text-muted); line-height: 1.6; }
     .feat-list li:last-child { border-bottom: none; }
     .feat-list li i { color: var(--primary-color); margin-top: 3px; flex-shrink: 0; }
     .feat-list li strong { color: var(--text-color); }
 
-    /* Role table */
     .role-table { width: 100%; border-collapse: collapse; font-size: .875rem; }
-    .role-table th {
-      font-family: 'DM Mono', monospace;
-      font-size: .7rem;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: var(--text-faint);
-      padding: .6rem .75rem;
-      border-bottom: 1px solid var(--border-color);
-      text-align: left;
-    }
-    .role-table td {
-      padding: .8rem .75rem;
-      border-bottom: 1px solid var(--border-color);
-      color: var(--text-muted);
-      vertical-align: top;
-    }
+    .role-table th { font-family: 'DM Mono', monospace; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--text-faint); padding: .6rem .75rem; border-bottom: 1px solid var(--border-color); text-align: left; }
+    .role-table td { padding: .8rem .75rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); vertical-align: top; }
     .role-table tr:last-child td { border-bottom: none; }
     .role-table tr:hover td { background: var(--surface-2); }
-    .role-badge {
-      display: inline-flex; align-items: center; gap: .35rem;
-      font-weight: 600; color: var(--text-color); white-space: nowrap;
-      font-size: .875rem;
-    }
+    .role-badge { display: inline-flex; align-items: center; gap: .35rem; font-weight: 600; color: var(--text-color); white-space: nowrap; font-size: .875rem; }
 
-    /* Section divider label */
-    .section-label {
-      font-family: 'DM Mono', monospace;
-      font-size: .7rem;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--primary-color);
-      margin-bottom: 1rem;
-      display: flex; align-items: center; gap: .5rem;
-    }
-    .section-label::after {
-      content: '';
-      flex: 1; height: 1px;
-      background: linear-gradient(90deg, var(--border-color), transparent);
-    }
+    .section-label { font-family: 'DM Mono', monospace; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--primary-color); margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-color), transparent); }
 
-    /* ─── Gallery ────────────────────────────────────────────────── */
-    .gallery-slot {
-      background: var(--surface-2);
-      border: 2px dashed var(--border-color);
-      border-radius: var(--radius);
-      overflow: hidden;
-      aspect-ratio: 16/9;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: .75rem;
-      color: var(--text-faint);
-      transition: border-color .2s, background .2s;
-      cursor: pointer;
-      position: relative;
-    }
+    .gallery-slot { background: var(--surface-2); border: 2px dashed var(--border-color); border-radius: var(--radius); overflow: hidden; aspect-ratio: 16/9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .75rem; color: var(--text-faint); transition: border-color .2s, background .2s; cursor: pointer; position: relative; }
     .gallery-slot:hover { border-color: var(--primary-color); background: var(--primary-dim); color: var(--primary-color); }
     .gallery-slot input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-    .gallery-slot img {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      border-radius: var(--radius);
-      display: none;
-    }
+    .gallery-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius); display: none; }
     .gallery-slot.has-image img { display: block; }
     .gallery-slot.has-image .slot-placeholder { display: none; }
     .slot-placeholder { display: flex; flex-direction: column; align-items: center; gap: .5rem; pointer-events: none; }
     .gallery-slot i { font-size: 2rem; }
     .gallery-slot-label { font-size: .78rem; font-family: 'DM Mono', monospace; letter-spacing: .06em; }
+    .gallery-caption { font-size: .78rem; color: var(--text-faint); text-align: center; margin-top: .5rem; font-family: 'DM Mono', monospace; }
 
-    .gallery-caption {
-      font-size: .78rem;
-      color: var(--text-faint);
-      text-align: center;
-      margin-top: .5rem;
-      font-family: 'DM Mono', monospace;
-    }
-
-    /* ─── Sticky Sidebar ─────────────────────────────────────────── */
     .sidebar-sticky { position: sticky; top: 88px; }
 
-    /* Architecture highlight box */
-    .arch-highlight {
-      background: var(--primary-dim);
-      border: 1px solid rgba(0,229,160,.2);
-      border-radius: 10px;
-      padding: 1rem 1.25rem;
-      display: flex; align-items: flex-start; gap: .75rem;
-      margin-bottom: 1rem;
-      font-size: .875rem;
-      color: var(--text-muted);
-    }
+    .arch-highlight { background: var(--primary-dim); border: 1px solid rgba(0,229,160,.2); border-radius: 10px; padding: 1rem 1.25rem; display: flex; align-items: flex-start; gap: .75rem; margin-bottom: 1rem; font-size: .875rem; color: var(--text-muted); }
     .arch-highlight i { color: var(--primary-color); font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
     .arch-highlight strong { color: var(--text-color); }
 
-    /* ─── Footer ─────────────────────────────────────────────────── */
-    footer {
-      background: var(--surface-color);
-      border-top: 1px solid var(--border-color);
-      padding: 2rem 0;
-      text-align: center;
-      font-size: .8rem;
-      color: var(--text-faint);
+    #scrollTop {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--primary-color); color: #0a0d14;
+      border: none; display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; cursor: pointer;
+      box-shadow: 0 4px 20px var(--primary-glow);
+      opacity: 0; transform: translateY(16px) scale(.85); pointer-events: none;
+      transition: opacity .3s, transform .3s, filter .2s;
     }
+    #scrollTop.visible { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+    #scrollTop:hover { filter: brightness(1.15); transform: translateY(-3px) scale(1.05); }
+
+    footer { background: var(--surface-color); border-top: 1px solid var(--border-color); padding: 2rem 0; text-align: center; font-size: .8rem; color: var(--text-faint); }
     footer a { color: var(--primary-color); text-decoration: none; }
 
-    /* ─── Fade-in ────────────────────────────────────────────────── */
     .fade-up { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
-    .d1 { transition-delay: .05s; } .d2 { transition-delay: .15s; }
-    .d3 { transition-delay: .25s; } .d4 { transition-delay: .35s; }
-
-    /* Hero entry */
+    .d1{transition-delay:.05s} .d2{transition-delay:.15s} .d3{transition-delay:.25s} .d4{transition-delay:.35s}
     .hero-in { animation: heroIn .7s ease both; }
-    .hi1 { animation-delay: .05s; } .hi2 { animation-delay: .18s; }
-    .hi3 { animation-delay: .3s;  } .hi4 { animation-delay: .42s; }
-    .hi5 { animation-delay: .54s; }
-    @keyframes heroIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    .hi1{animation-delay:.05s} .hi2{animation-delay:.18s} .hi3{animation-delay:.3s} .hi4{animation-delay:.42s} .hi5{animation-delay:.54s}
+    @keyframes heroIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
-    /* ── Hero Code Block ────────────────────────────────────────── */
-    .hero-code-block {
-      background: #1a1f2e;
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: var(--radius);
-      padding: 1.75rem;
-      font-family: 'DM Mono', monospace;
-      font-size: .8rem;
-      line-height: 1.9;
-      position: relative; overflow: hidden;
-      box-shadow: 0 8px 40px rgba(0,0,0,.35), 0 0 60px rgba(0,229,160,.05);
-    }
-    .hero-code-block::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, var(--primary-color), #6366f1);
-    }
-    .code-dots { display:flex; gap:6px; margin-bottom:1.2rem; }
-    .code-dot  { width:10px; height:10px; border-radius:50%; }
-    .dot-r { background:#ff5f57; } .dot-y { background:#febc2e; } .dot-g { background:#00e5a0; }
-    .c-key-h { color: #c792ea; }
-    .c-fn-h  { color: #82aaff; }
-    .c-str-h { color: #00e5a0; }
-    .c-sym-h { color: #89ddff; }
-    .c-com-h { color: #7c8fa6; }
-    .cursor-h {
-      display: inline-block; width: 7px; height: 1em;
-      background: #00e5a0; vertical-align: text-bottom;
-      animation: blinkH 1.1s step-end infinite;
-    }
-    [data-theme="light"] .hero-code-block { color: #c9d1d9; }
-    @keyframes blinkH { 0%,100%{opacity:1} 50%{opacity:0} }
+    .hero-code-block { background: #1a1f2e; border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding: 1.75rem; font-family: 'DM Mono', monospace; font-size: .8rem; line-height: 1.9; position: relative; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,.35), 0 0 60px rgba(0,229,160,.05); }
+    .hero-code-block::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary-color), #6366f1); }
+    .code-dots{display:flex;gap:6px;margin-bottom:1.2rem} .code-dot{width:10px;height:10px;border-radius:50%}
+    .dot-r{background:#ff5f57} .dot-y{background:#febc2e} .dot-g{background:#00e5a0}
+    .c-key-h{color:#c792ea} .c-fn-h{color:#82aaff} .c-str-h{color:#00e5a0} .c-sym-h{color:#89ddff} .c-com-h{color:#7c8fa6}
+    .cursor-h { display:inline-block;width:7px;height:1em;background:#00e5a0;vertical-align:text-bottom;animation:blinkH 1.1s step-end infinite; }
+    @keyframes blinkH{0%,100%{opacity:1}50%{opacity:0}}
 
-    @media (max-width:991px) { .sidebar-sticky { position:static; } }
+    @media (max-width:991px){.sidebar-sticky{position:static}}
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
   <nav class="navbar fixed-top">
     <div class="container d-flex align-items-center justify-content-between">
       <a class="navbar-brand" href="../index.html">aw<span>.</span></a>
-      <button id="themeToggle" aria-label="Toggle theme">
-        <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
-      </button>
+      <button id="themeToggle" aria-label="Toggle theme"><i class="bi bi-moon-stars-fill" id="themeIcon"></i></button>
     </div>
   </nav>
 
-  <!-- ── HERO ──────────────────────────────────────────────────────── -->
   <section class="project-hero">
     <div class="hero-blob hero-blob-1"></div>
     <div class="hero-blob hero-blob-2"></div>
     <div class="container" style="position:relative;z-index:1;">
       <div class="row align-items-center g-5">
-
-        <!-- Left: text -->
         <div class="col-lg-6">
-          <a href="../index.html#projects" class="back-link hero-in hi1">
-            <i class="bi bi-arrow-left"></i> Back to Projects
-          </a>
-
-          <div class="project-category-tag hero-in hi2">
-            <i class="bi bi-hospital"></i> Healthcare IT
-          </div>
-
+          <a href="../index.html#projects" class="back-link hero-in hi1"><i class="bi bi-arrow-left"></i> Back to Projects</a>
+          <div class="project-category-tag hero-in hi2"><i class="bi bi-hospital"></i> Healthcare IT</div>
           <h1 class="project-main-title hero-in hi3">Hospital Management<br>System</h1>
-          <p class="project-subtitle hero-in hi4">
-            A robust, full-featured hospital management platform built for real medical operations — from patient registration and appointment scheduling to diagnostics, billing, and real-time communication.
-          </p>
-
+          <p class="project-subtitle hero-in hi4">A robust, full-featured hospital management platform built for real medical operations — from patient registration and appointment scheduling to diagnostics, billing, and real-time communication.</p>
           <div class="meta-row hero-in hi4">
-            <div class="meta-pill">
-              <i class="bi bi-person-badge"></i>
-              <span class="meta-pill-label">Role</span>
-              <span class="meta-pill-value">Backend Developer</span>
-            </div>
-            <div class="meta-pill">
-              <i class="bi bi-diagram-3"></i>
-              <span class="meta-pill-label">Architecture</span>
-              <span class="meta-pill-value">Repository Pattern</span>
-            </div>
-            <div class="meta-pill">
-              <i class="bi bi-translate"></i>
-              <span class="meta-pill-label">Languages</span>
-              <span class="meta-pill-value">Arabic 🇸🇦 · English 🇬🇧</span>
-            </div>
+            <div class="meta-pill"><i class="bi bi-person-badge"></i><span class="meta-pill-label">Role</span><span class="meta-pill-value">Backend Developer</span></div>
+            <div class="meta-pill"><i class="bi bi-diagram-3"></i><span class="meta-pill-label">Architecture</span><span class="meta-pill-value">Repository Pattern</span></div>
+            <div class="meta-pill"><i class="bi bi-translate"></i><span class="meta-pill-label">Languages</span><span class="meta-pill-value">Arabic 🇸🇦 · English 🇬🇧</span></div>
           </div>
-
           <div class="hero-in hi5">
-            <a href="https://github.com/AbdullahWael-Dev/hospital-management-" target="_blank" rel="noopener" class="btn-gh">
-              <i class="bi bi-github"></i> View Source Code
-            </a>
+            <a href="https://github.com/AbdullahWael-Dev/hospital-management-system" target="_blank" rel="noopener" class="btn-gh"><i class="bi bi-github"></i> View Source Code</a>
           </div>
         </div>
-
-        <!-- Right: code typewriter -->
         <div class="col-lg-6 d-none d-lg-block hero-in hi5">
           <div class="hero-code-block">
-            <div class="code-dots">
-              <div class="code-dot dot-r"></div>
-              <div class="code-dot dot-y"></div>
-              <div class="code-dot dot-g"></div>
-            </div>
+            <div class="code-dots"><div class="code-dot dot-r"></div><div class="code-dot dot-y"></div><div class="code-dot dot-g"></div></div>
             <div id="hero-code-hms"></div>
           </div>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- ── MAIN CONTENT ───────────────────────────────────────────────── -->
   <div class="page-content">
     <div class="container">
       <div class="row g-4">
-
-        <!-- LEFT COLUMN -->
         <div class="col-lg-8">
 
-          <!-- Overview -->
           <p class="section-label fade-up d1"><i class="bi bi-info-circle"></i> Overview</p>
           <div class="content-card fade-up d2">
             <div class="card-title"><i class="bi bi-hospital-fill"></i> Project Overview</div>
-            <p style="color:var(--text-muted);line-height:1.8;font-size:.93rem;" class="mb-3">
-              A comprehensive Hospital Management System designed to streamline medical facility operations end-to-end. The system connects every stakeholder — admin, doctors, patients, lab staff, and radiology personnel — through dedicated dashboards, each tailored to their specific workflow.
-            </p>
-            <p style="color:var(--text-muted);line-height:1.8;font-size:.93rem;">
-              Built with a clean <strong style="color:var(--text-color);">Repository Pattern</strong> architecture for maintainability and scale, and fully bilingual (Arabic & English) via <code>mcamara/laravel-localization</code> and <code>astrotomic/laravel-translatable</code>.
-            </p>
+            <p style="color:var(--text-muted);line-height:1.8;font-size:.93rem;" class="mb-3">A comprehensive Hospital Management System designed to streamline medical facility operations end-to-end. The system connects every stakeholder — admin, doctors, patients, lab staff, and radiology personnel — through dedicated dashboards, each tailored to their specific workflow.</p>
+            <p style="color:var(--text-muted);line-height:1.8;font-size:.93rem;">Built with a clean <strong style="color:var(--text-color);">Repository Pattern</strong> architecture for maintainability and scale, and fully bilingual (Arabic &amp; English) via <code>mcamara/laravel-localization</code> and <code>astrotomic/laravel-translatable</code>.</p>
           </div>
 
-          <!-- User Roles -->
           <p class="section-label fade-up d1 mt-4"><i class="bi bi-people"></i> User Roles</p>
           <div class="content-card fade-up d2">
             <div class="card-title"><i class="bi bi-shield-lock"></i> Role-Based Dashboards</div>
             <p style="color:var(--text-muted);font-size:.88rem;" class="mb-3">Each role has a dedicated dashboard with precisely scoped capabilities.</p>
             <div class="table-responsive">
               <table class="role-table">
-                <thead>
-                  <tr>
-                    <th>Role</th>
-                    <th>Dashboard</th>
-                    <th>Key Capabilities</th>
-                  </tr>
-                </thead>
+                <thead><tr><th>Role</th><th>Dashboard</th><th>Key Capabilities</th></tr></thead>
                 <tbody>
-                  <tr>
-                    <td><span class="role-badge">🛡️ Admin</span></td>
-                    <td>Full System</td>
-                    <td>User management, reports, system config</td>
-                  </tr>
-                  <tr>
-                    <td><span class="role-badge">🩺 Doctor</span></td>
-                    <td>Clinical</td>
-                    <td>Patient records, diagnostics, appointments</td>
-                  </tr>
-                  <tr>
-                    <td><span class="role-badge">🧑‍⚕️ Patient</span></td>
-                    <td>Personal</td>
-                    <td>Book appointments, view history, invoices</td>
-                  </tr>
-                  <tr>
-                    <td><span class="role-badge">🔬 Lab Employee</span></td>
-                    <td>Laboratory</td>
-                    <td>Test requests, results, specimen tracking</td>
-                  </tr>
-                  <tr>
-                    <td><span class="role-badge">📡 Ray Employee</span></td>
-                    <td>Radiology</td>
-                    <td>Ray requests, imaging reports, results</td>
-                  </tr>
+                  <tr><td><span class="role-badge">🛡️ Admin</span></td><td>Full System</td><td>User management, reports, system config</td></tr>
+                  <tr><td><span class="role-badge">🩺 Doctor</span></td><td>Clinical</td><td>Patient records, diagnostics, appointments</td></tr>
+                  <tr><td><span class="role-badge">🧑‍⚕️ Patient</span></td><td>Personal</td><td>Book appointments, view history, invoices</td></tr>
+                  <tr><td><span class="role-badge">🔬 Lab Employee</span></td><td>Laboratory</td><td>Test requests, results, specimen tracking</td></tr>
+                  <tr><td><span class="role-badge">📡 Ray Employee</span></td><td>Radiology</td><td>Ray requests, imaging reports, results</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
 
-          <!-- Features -->
           <p class="section-label fade-up d1 mt-4"><i class="bi bi-stars"></i> Features</p>
-
-          <!-- Medical Management -->
           <div class="content-card fade-up d2">
             <div class="card-title"><i class="bi bi-heart-pulse-fill"></i> Medical Management</div>
             <ul class="feat-list">
@@ -560,7 +280,6 @@
             </ul>
           </div>
 
-          <!-- Financial -->
           <div class="content-card fade-up d3">
             <div class="card-title"><i class="bi bi-currency-dollar"></i> Financial System</div>
             <ul class="feat-list">
@@ -571,7 +290,6 @@
             </ul>
           </div>
 
-          <!-- Integrations -->
           <div class="content-card fade-up d4">
             <div class="card-title"><i class="bi bi-plug-fill"></i> Integrations &amp; Operations</div>
             <ul class="feat-list">
@@ -582,95 +300,49 @@
             </ul>
           </div>
 
-          <!-- Architecture -->
           <p class="section-label fade-up d1 mt-4"><i class="bi bi-diagram-3"></i> Architecture</p>
           <div class="content-card fade-up d2">
             <div class="card-title"><i class="bi bi-layers-fill"></i> Backend Architecture</div>
-
-            <div class="arch-highlight">
-              <i class="bi bi-boxes"></i>
-              <span><strong>Repository Pattern</strong> — Business logic is fully decoupled from the framework core, ensuring clean, testable, and maintainable code.</span>
-            </div>
-            <div class="arch-highlight">
-              <i class="bi bi-diagram-2-fill"></i>
-              <span><strong>Modular Design</strong> — Separated logic for Appointments, Billing, Laboratories, Radiology, and Patient Records.</span>
-            </div>
-            <div class="arch-highlight">
-              <i class="bi bi-lightning-charge-fill"></i>
-              <span><strong>Query Optimization</strong> — Extensive use of eager loading and indexing to handle large medical datasets without performance degradation.</span>
-            </div>
-            <div class="arch-highlight" style="margin-bottom:0;">
-              <i class="bi bi-translate"></i>
-              <span><strong>Bilingual Support</strong> — Full Arabic / English localization using <code>mcamara/laravel-localization</code> and <code>astrotomic/laravel-translatable</code>.</span>
-            </div>
+            <div class="arch-highlight"><i class="bi bi-boxes"></i><span><strong>Repository Pattern</strong> — Business logic is fully decoupled from the framework core, ensuring clean, testable, and maintainable code.</span></div>
+            <div class="arch-highlight"><i class="bi bi-diagram-2-fill"></i><span><strong>Modular Design</strong> — Separated logic for Appointments, Billing, Laboratories, Radiology, and Patient Records.</span></div>
+            <div class="arch-highlight"><i class="bi bi-lightning-charge-fill"></i><span><strong>Query Optimization</strong> — Extensive use of eager loading and indexing to handle large medical datasets without performance degradation.</span></div>
+            <div class="arch-highlight" style="margin-bottom:0"><i class="bi bi-translate"></i><span><strong>Bilingual Support</strong> — Full Arabic / English localization using <code>mcamara/laravel-localization</code> and <code>astrotomic/laravel-translatable</code>.</span></div>
           </div>
 
-          <!-- Gallery -->
           <p class="section-label fade-up d1 mt-4"><i class="bi bi-images"></i> Screenshots</p>
           <div class="content-card fade-up d2">
             <div class="card-title"><i class="bi bi-grid-1x2"></i> Project Gallery</div>
             <p style="color:var(--text-muted);font-size:.85rem;" class="mb-4">Click any slot to upload a screenshot from your project.</p>
             <div class="row g-3">
               <div class="col-md-6">
-                <div class="gallery-slot" id="slot1">
-                  <input type="file" accept="image/*" onchange="loadImg(this,'slot1')">
-                  <div class="slot-placeholder">
-                    <i class="bi bi-image"></i>
-                    <span class="gallery-slot-label">Dashboard</span>
-                  </div>
-                  <img id="slot1-img" src="" alt="Dashboard"/>
-                </div>
+                <div class="gallery-slot" id="slot1"><input type="file" accept="image/*" onchange="loadImg(this,'slot1')"><div class="slot-placeholder"><i class="bi bi-image"></i><span class="gallery-slot-label">Dashboard</span></div><img id="slot1-img" src="" alt=""/></div>
                 <p class="gallery-caption">Admin Dashboard</p>
               </div>
               <div class="col-md-6">
-                <div class="gallery-slot" id="slot2">
-                  <input type="file" accept="image/*" onchange="loadImg(this,'slot2')">
-                  <div class="slot-placeholder">
-                    <i class="bi bi-image"></i>
-                    <span class="gallery-slot-label">Appointments</span>
-                  </div>
-                  <img id="slot2-img" src="" alt="Appointments"/>
-                </div>
+                <div class="gallery-slot" id="slot2"><input type="file" accept="image/*" onchange="loadImg(this,'slot2')"><div class="slot-placeholder"><i class="bi bi-image"></i><span class="gallery-slot-label">Appointments</span></div><img id="slot2-img" src="" alt=""/></div>
                 <p class="gallery-caption">Appointment Booking</p>
               </div>
               <div class="col-md-6">
-                <div class="gallery-slot" id="slot3">
-                  <input type="file" accept="image/*" onchange="loadImg(this,'slot3')">
-                  <div class="slot-placeholder">
-                    <i class="bi bi-image"></i>
-                    <span class="gallery-slot-label">Patient Records</span>
-                  </div>
-                  <img id="slot3-img" src="" alt="Patient Records"/>
-                </div>
+                <div class="gallery-slot" id="slot3"><input type="file" accept="image/*" onchange="loadImg(this,'slot3')"><div class="slot-placeholder"><i class="bi bi-image"></i><span class="gallery-slot-label">Patient Records</span></div><img id="slot3-img" src="" alt=""/></div>
                 <p class="gallery-caption">Patient Records</p>
               </div>
               <div class="col-md-6">
-                <div class="gallery-slot" id="slot4">
-                  <input type="file" accept="image/*" onchange="loadImg(this,'slot4')">
-                  <div class="slot-placeholder">
-                    <i class="bi bi-image"></i>
-                    <span class="gallery-slot-label">Billing</span>
-                  </div>
-                  <img id="slot4-img" src="" alt="Billing"/>
-                </div>
+                <div class="gallery-slot" id="slot4"><input type="file" accept="image/*" onchange="loadImg(this,'slot4')"><div class="slot-placeholder"><i class="bi bi-image"></i><span class="gallery-slot-label">Billing</span></div><img id="slot4-img" src="" alt=""/></div>
                 <p class="gallery-caption">Billing &amp; Invoices</p>
               </div>
             </div>
           </div>
 
-        </div><!-- /col-lg-8 -->
+        </div>
 
-        <!-- RIGHT SIDEBAR -->
         <div class="col-lg-4">
           <div class="sidebar-sticky">
-
-            <!-- Tech Stack -->
             <p class="section-label fade-up d1"><i class="bi bi-stack"></i> Tech Stack</p>
             <div class="content-card fade-up d2">
               <div class="card-title"><i class="bi bi-cpu"></i> Technologies Used</div>
               <div>
                 <span class="tech-pill"><i class="bi bi-box-seam" style="color:#e63329"></i> Laravel</span>
-                <span class="tech-pill"><i class="bi bi-lightning-charge" style="color:#db2777"></i> Livewire</span>
+                <span class="tech-pill"><i class="bi bi-lightning-charge" style="color:#db2877"></i> Livewire</span>
                 <span class="tech-pill"><i class="bi bi-wind" style="color:#38bdf8"></i> Tailwind CSS</span>
                 <span class="tech-pill"><i class="bi bi-database" style="color:#00758f"></i> MySQL</span>
                 <span class="tech-pill"><i class="bi bi-broadcast" style="color:#ff6c37"></i> Pusher</span>
@@ -679,8 +351,6 @@
                 <span class="tech-pill"><i class="bi bi-file-code" style="color:#7752a9"></i> Blade Templates</span>
               </div>
             </div>
-
-            <!-- Key Features quick list -->
             <p class="section-label fade-up d2 mt-3"><i class="bi bi-check-all"></i> Key Features</p>
             <div class="content-card fade-up d3">
               <ul class="feat-list">
@@ -696,114 +366,69 @@
                 <li><i class="bi bi-check-circle-fill"></i><span>Bilingual (AR / EN)</span></li>
               </ul>
             </div>
-
-            <!-- Source Code -->
             <p class="section-label fade-up d3 mt-3"><i class="bi bi-github"></i> Source</p>
             <div class="content-card fade-up d4">
-              <a href="https://github.com/AbdullahWael-Dev/hospital-management-" target="_blank" rel="noopener" class="btn-gh w-100 justify-content-center">
-                <i class="bi bi-github"></i> View on GitHub
-              </a>
+              <a href="https://github.com/AbdullahWael-Dev/hospital-management-system" target="_blank" rel="noopener" class="btn-gh w-100 justify-content-center"><i class="bi bi-github"></i> View on GitHub</a>
             </div>
-
           </div>
-        </div><!-- /col-lg-4 -->
-
-      </div><!-- /row -->
-    </div><!-- /container -->
-  </div><!-- /page-content -->
-
-  <footer>
-    <div class="container">
-      <p id="footer-copy"></p>
+        </div>
+      </div>
     </div>
-  </footer>
+  </div>
+
+  <button id="scrollTop" aria-label="Back to top"><i class="bi bi-arrow-up"></i></button>
+
+  <footer><div class="container"><p id="footer-copy"></p></div></footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    /* Footer auto year */
-    document.getElementById('footer-copy').innerHTML =
-      `© ${new Date().getFullYear()} <a href="../index.html">Abdallah Wael</a> — Built with Laravel spirit.`;
-
-    /* Theme Toggle */
+    document.getElementById('footer-copy').innerHTML = `© ${new Date().getFullYear()} <a href="../index.html">Abdallah Wael</a>.`;
+    const scrollTopBtn = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => { scrollTopBtn.classList.toggle('visible', window.scrollY > 400); }, { passive: true });
+    scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     const root = document.documentElement;
-    function applyTheme(t) {
-      root.setAttribute('data-theme', t);
-      localStorage.setItem('theme', t);
-      document.getElementById('themeIcon').className = t === 'dark' ? 'bi bi-moon-stars-fill' : 'bi bi-sun-fill';
-    }
-    applyTheme(localStorage.getItem('theme') || 'dark');
-    document.getElementById('themeToggle').addEventListener('click', () => {
-      applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-    });
-
-    /* Fade-up on scroll */
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-    }, { threshold: .1 });
-    document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
-
-    /* Gallery image upload */
-    function loadImg(input, slotId) {
-      const file = input.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = e => {
-        const slot = document.getElementById(slotId);
-        const img  = document.getElementById(slotId + '-img');
-        img.src = e.target.result;
-        slot.classList.add('has-image');
-      };
-      reader.readAsDataURL(file);
-    }
-    /* ── Hero Code Typewriter ───────────────────────────────────── */
-    (function typeHMS() {
-      const wrapper = document.getElementById('hero-code-hms');
-      if (!wrapper) return;
-      const cursor = document.createElement('span');
-      cursor.className = 'cursor-h';
-      const lines = [
-        [ ['// HospitalSystem.php','c-com-h'] ],
-        [],
-        [ ['class','c-key-h'],[' ',''],['AppointmentService','c-fn-h'],[' {','c-sym-h'] ],
-        [ ['  ',''],['public','c-key-h'],[' function ',''],['book','c-fn-h'],['(Patient $p, Doctor $d)','c-sym-h'] ],
-        [ ['  {','c-sym-h'] ],
-        [ ['    ',''],['$slot','c-str-h'],[' = $d->',''],['availableSlots','c-fn-h'],['()->','c-sym-h'],['first();','c-sym-h'] ],
-        [],
-        [ ['    '],['Appointment::','c-fn-h'],['create','c-fn-h'],['([','c-sym-h'] ],
-        [ ['      '],["'patient_id' => ",''],['$p->id,','c-str-h'] ],
-        [ ['      '],["'doctor_id'  => ",''],['$d->id,','c-str-h'] ],
-        [ ['      '],["'slot'       => ",''],['$slot,','c-str-h'] ],
-        [ ['    ',''],[']);','c-sym-h'] ],
-        [],
-        [ ['    ',''],['// notify patient','c-com-h'] ],
-        [ ['    '],['Notification::','c-fn-h'],['send','c-fn-h'],['($p, ',''],['new','c-key-h'],[' BookingConfirmed());','c-sym-h'] ],
-        [ ['  ',''],['}','c-sym-h'] ],
-        [ ['}','c-sym-h'] ],
+    function applyTheme(t) { root.setAttribute('data-theme',t); localStorage.setItem('theme',t); document.getElementById('themeIcon').className = t==='dark'?'bi bi-moon-stars-fill':'bi bi-sun-fill'; }
+    applyTheme(localStorage.getItem('theme')||'dark');
+    document.getElementById('themeToggle').addEventListener('click',()=>applyTheme(root.getAttribute('data-theme')==='dark'?'light':'dark'));
+    const obs = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.1});
+    document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+    function loadImg(input,slotId){const file=input.files[0];if(!file)return;const reader=new FileReader();reader.onload=e=>{document.getElementById(slotId).classList.add('has-image');document.getElementById(slotId+'-img').src=e.target.result;};reader.readAsDataURL(file);}
+    (function typeHMS(){
+      const wrapper=document.getElementById('hero-code-hms');if(!wrapper)return;
+      const cursor=document.createElement('span');cursor.className='cursor-h';
+      const lines=[
+        [['// HospitalSystem.php','c-com-h']],[],
+        [['class','c-key-h'],[' ',''],['AppointmentService','c-fn-h'],[' {','c-sym-h']],
+        [['  ',''],['public','c-key-h'],[' function ',''],['book','c-fn-h'],['(Patient $p, Doctor $d)','c-sym-h']],
+        [['  {','c-sym-h']],
+        [['    ',''],['$slot','c-str-h'],[' = $d->',''],['availableSlots','c-fn-h'],['()->','c-sym-h'],['first();','c-sym-h']],[],
+        [['    '],['Appointment::','c-fn-h'],['create','c-fn-h'],['([','c-sym-h']],
+        [['      '],["'patient_id' => ",''],['$p->id,','c-str-h']],
+        [['      '],["'doctor_id'  => ",''],['$d->id,','c-str-h']],
+        [['      '],["'slot'       => ",''],['$slot,','c-str-h']],
+        [['    ',''],[']);','c-sym-h']],[],
+        [['    ',''],['// notify patient','c-com-h']],
+        [['    '],['Notification::','c-fn-h'],['send','c-fn-h'],['($p, ',''],['new','c-key-h'],[' BookingConfirmed());','c-sym-h']],
+        [['  ',''],['}','c-sym-h']],[['  }',' c-sym-h']]
       ];
-      let li = 0;
-      function charDelay(ch) { return ch === ' ' ? 12 : Math.random() * 22 + 14; }
-      function nextLine() {
-        if (li >= lines.length) return;
-        const tokens = lines[li++];
-        const div = document.createElement('div');
-        wrapper.appendChild(div);
-        div.appendChild(cursor);
-        if (!tokens.length) { setTimeout(nextLine, 45); return; }
-        const chars = [];
-        for (const [text, cls] of tokens) for (const ch of text) chars.push({ ch, cls });
-        let ci = 0, curSpan = null, curCls = Symbol();
-        function typeChar() {
-          if (ci >= chars.length) { setTimeout(nextLine, 45); return; }
-          const { ch, cls } = chars[ci++];
-          cursor.remove();
-          if (cls !== curCls) { curSpan = document.createElement('span'); if (cls) curSpan.className = cls; div.appendChild(curSpan); curCls = cls; }
-          curSpan.appendChild(document.createTextNode(ch));
-          div.appendChild(cursor);
-          setTimeout(typeChar, charDelay(ch));
+      let li=0;
+      function charDelay(ch){return ch===' '?12:Math.random()*22+14;}
+      function nextLine(){
+        if(li>=lines.length)return;
+        const tokens=lines[li++];const div=document.createElement('div');wrapper.appendChild(div);div.appendChild(cursor);
+        if(!tokens.length){setTimeout(nextLine,45);return;}
+        const chars=[];for(const[text,cls]of tokens)for(const ch of text)chars.push({ch,cls});
+        let ci=0,curSpan=null,curCls=Symbol();
+        function typeChar(){
+          if(ci>=chars.length){setTimeout(nextLine,45);return;}
+          const{ch,cls}=chars[ci++];cursor.remove();
+          if(cls!==curCls){curSpan=document.createElement('span');if(cls)curSpan.className=cls;div.appendChild(curSpan);curCls=cls;}
+          curSpan.appendChild(document.createTextNode(ch));div.appendChild(cursor);
+          setTimeout(typeChar,charDelay(ch));
         }
         typeChar();
       }
-      setTimeout(nextLine, 700);
+      setTimeout(nextLine,700);
     })();
   </script>
 </body>
