@@ -612,7 +612,7 @@
       }
     })();
 
-    document.getElementById('footer-copy').innerHTML = `© ${new Date().getFullYear()} <a href="../index.html">Abdallah Wael</a> — Built with Laravel spirit.`;
+    document.getElementById('footer-copy').innerHTML = `© ${new Date().getFullYear()} <a href="../index.html">Abdallah Wael</a>.`;
     const scrollTopBtn = document.getElementById('scrollTop');
     window.addEventListener('scroll', () => { scrollTopBtn.classList.toggle('visible', window.scrollY > 400); }, { passive: true });
     scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
