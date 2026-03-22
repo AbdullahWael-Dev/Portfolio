@@ -47,7 +47,7 @@
     [data-theme="light"] .c-sym-bg { color: #0891b2; }
     [data-theme="light"] .cursor-bg { background: #0a7a56; }
     [data-theme="light"] .tech-pill     { background: rgba(0,180,120,.09); border-color: rgba(0,180,120,.2); }
-    [data-theme="light"] .video-slot    { background: #e8ebf4; }
+    [data-theme="light"] .demo-video-wrap { border-color: rgba(0,0,0,.12); background: #0f0f12; }
     [data-theme="light"] footer         { background: #ffffff; }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -179,67 +179,21 @@
     }
     .feat-group-title::before { content:''; display:inline-block; width:8px; height:8px; border-radius:2px; background:var(--primary-color); }
 
-    /* ── Video Slots ────────────────────────────────────────────── */
-    .video-slot {
-      background:var(--surface-2);
-      border:2px dashed var(--border-color);
-      border-radius:var(--radius);
-      overflow:hidden;
-      aspect-ratio:16/9;
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      gap:.75rem;
-      color:var(--text-faint);
-      transition: border-color .2s, background .2s, color .2s;
-      cursor:pointer;
-      position:relative;
+    /* ── Demo video (embedded file) ─────────────────────────────── */
+    .demo-video-wrap {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      background: #0a0a0c;
+      box-shadow: 0 20px 56px rgba(0,0,0,.45);
     }
-    .video-slot:hover { border-color:var(--primary-color); background:var(--primary-dim); color:var(--primary-color); }
-    .video-slot input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; z-index:2; }
-    .video-slot video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:var(--radius); display:none; }
-    .video-slot.has-video video { display:block; }
-    .video-slot.has-video .slot-placeholder { display:none; }
-    .video-slot.has-video input { display:none; }
-    .slot-placeholder { display:flex; flex-direction:column; align-items:center; gap:.5rem; pointer-events:none; }
-    .slot-placeholder i { font-size:2.2rem; }
-    .slot-label { font-size:.78rem; font-family:'DM Mono',monospace; letter-spacing:.06em; }
-
-    /* video controls bar */
-    .video-controls {
-      position:absolute; bottom:0; left:0; right:0; z-index:3;
-      background:linear-gradient(transparent, rgba(0,0,0,.7));
-      padding:.5rem .75rem;
-      display:none; align-items:center; gap:.5rem;
-    }
-    .video-slot.has-video:hover .video-controls { display:flex; }
-    .vc-btn {
-      background:rgba(255,255,255,.15); border:none; color:#fff;
-      width:28px; height:28px; border-radius:6px; cursor:pointer; font-size:.8rem;
-      display:flex; align-items:center; justify-content:center;
-      transition:background .2s;
-    }
-    .vc-btn:hover { background:var(--primary-color); color:#0a0d14; }
-    .vc-remove { margin-left:auto; background:rgba(239,68,68,.25); }
-    .vc-remove:hover { background:#ef4444; }
-
-    .video-caption { font-size:.78rem; color:var(--text-faint); text-align:center; margin-top:.5rem; font-family:'DM Mono',monospace; }
+    .demo-video-wrap video { width: 100%; height: auto; display: block; vertical-align: middle; }
+    .video-caption-note { font-size: .85rem; color: var(--text-muted); margin-top: .75rem; line-height: 1.5; }
 
     /* ── Sidebar sticky ─────────────────────────────────────────── */
     .sidebar-sticky { position:sticky; top:88px; }
 
     /* ── Footer ─────────────────────────────────────────────────── */
-    #scrollTop {
-      position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
-      width: 44px; height: 44px; border-radius: 12px;
-      background: var(--primary-color); color: #0a0d14;
-      border: none; display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; cursor: pointer;
-      box-shadow: 0 4px 20px var(--primary-glow);
-      opacity: 0; transform: translateY(16px) scale(.85); pointer-events: none;
-      transition: opacity .3s, transform .3s, filter .2s;
-    }
-    #scrollTop.visible { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
-    #scrollTop:hover { filter: brightness(1.15); transform: translateY(-3px) scale(1.05); }
-
     #scrollTop {
       position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
       width: 44px; height: 44px; border-radius: 12px;
@@ -296,6 +250,46 @@
     }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
+    /* ── Page loader ───────────────────────────────────────────── */
+    #pageLoader {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      background: var(--background-color);
+      transition: opacity .5s cubic-bezier(.4,0,.2,1), visibility .5s;
+    }
+    #pageLoader.is-done {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .page-loader-spinner {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 3px solid rgba(0,229,160,.12);
+      border-top-color: var(--primary-color);
+      border-right-color: rgba(0,229,160,.38);
+      animation: pageLoaderSpin .72s linear infinite;
+    }
+    @keyframes pageLoaderSpin {
+      to { transform: rotate(360deg); }
+    }
+    .page-loader-brand {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -.03em;
+      color: var(--text-color);
+    }
+    .page-loader-brand span { color: var(--primary-color); }
+    body.page-loading { overflow: hidden; }
+
     @media (max-width:991px) { .sidebar-sticky { position:static; } }
     @media (max-width:768px) {
       body { padding-top: 64px; }
@@ -306,12 +300,16 @@
       .meta-pill { font-size: .78rem; padding: .4rem .75rem; }
       .back-link { margin-bottom: 1.5rem; }
       .content-card { padding: 1.5rem; }
-      .video-slot { aspect-ratio: 16/9; }
       .btn-gh { width: 100%; justify-content: center; }
     }
   </style>
 </head>
-<body>
+<body class="page-loading">
+
+  <div id="pageLoader" aria-busy="true" aria-label="Loading page">
+    <div class="page-loader-spinner" role="presentation"></div>
+    <div class="page-loader-brand">aw<span>.</span></div>
+  </div>
 
   <!-- Navbar -->
   <nav class="navbar fixed-top">
@@ -364,7 +362,7 @@
           </div>
 
           <div class="hero-in hi5">
-            <a href="https://github.com/abdallahwael" target="_blank" rel="noopener" class="btn-gh">
+            <a href="https://github.com/AbdullahWael-Dev/E-commerce" target="_blank" rel="noopener" class="btn-gh">
               <i class="bi bi-github"></i> View Source Code
             </a>
           </div>
@@ -471,20 +469,13 @@
           <p class="section-label fade-up d1 mt-4"><i class="bi bi-play-circle"></i> Demo</p>
           <div class="content-card fade-up d2">
             <div class="card-title"><i class="bi bi-camera-video-fill"></i> Project Walkthrough</div>
-            <p style="color:var(--text-muted);font-size:.85rem;" class="mb-4">Click to upload your demo video — MP4, WebM, or MOV supported.</p>
-            <div class="video-slot" id="vslot1">
-              <input type="file" accept="video/*" onchange="loadVideo(this,'vslot1')">
-              <div class="slot-placeholder">
-                <i class="bi bi-camera-video"></i>
-                <span class="slot-label">Full Project Demo</span>
-              </div>
-              <video id="vslot1-vid" loop></video>
-              <div class="video-controls">
-                <button class="vc-btn" onclick="togglePlay('vslot1-vid',event)" title="Play/Pause"><i class="bi bi-play-fill" id="vslot1-icon"></i></button>
-                <button class="vc-btn vc-remove" onclick="removeVideo('vslot1',event)" title="Remove"><i class="bi bi-trash3"></i></button>
-              </div>
+            <p style="color:var(--text-muted);font-size:.85rem;" class="mb-3">Screen recording of the storefront and admin dashboard (MP4).</p>
+            <div class="demo-video-wrap">
+              <video controls playsinline preload="metadata">
+                <source src="ecommerce_video/WhatsApp Video 2026-03-22 at 5.34.13 PM.mp4" type="video/mp4">
+              </video>
             </div>
-            <p class="video-caption mt-2">Full Project Walkthrough</p>
+            <p class="video-caption-note mt-2 mb-0"><i class="bi bi-play-circle me-1"></i> Full project walkthrough</p>
           </div>
 
         </div><!-- /col-lg-8 -->
@@ -532,7 +523,7 @@
             <!-- Source -->
             <p class="section-label fade-up d3 mt-3"><i class="bi bi-github"></i> Source</p>
             <div class="content-card fade-up d4">
-              <a href="https://github.com/abdallahwael" target="_blank" rel="noopener" class="btn-gh w-100 justify-content-center">
+              <a href="https://github.com/AbdullahWael-Dev/E-commerce" target="_blank" rel="noopener" class="btn-gh w-100 justify-content-center">
                 <i class="bi bi-github"></i> View on GitHub
               </a>
             </div>
@@ -546,8 +537,6 @@
 
   <button id="scrollTop" aria-label="Back to top"><i class="bi bi-arrow-up"></i></button>
 
-  <button id="scrollTop" aria-label="Back to top"><i class="bi bi-arrow-up"></i></button>
-
   <footer>
     <div class="container">
       <p id="footer-copy"></p>
@@ -556,6 +545,22 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    (function () {
+      function hideLoader() {
+        var el = document.getElementById('pageLoader');
+        if (el) el.classList.add('is-done');
+        document.body.classList.remove('page-loading');
+      }
+      function scheduleHide() {
+        requestAnimationFrame(function () { setTimeout(hideLoader, 200); });
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', scheduleHide);
+      } else {
+        scheduleHide();
+      }
+    })();
+
     /* Scroll to top */
     const scrollTopBtn = document.getElementById('scrollTop');
     window.addEventListener('scroll', () => {
@@ -586,50 +591,6 @@
     }, { threshold: .1 });
     document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
 
-    /* Video upload */
-    function loadVideo(input, slotId) {
-      const file = input.files[0];
-      if (!file) return;
-      const url = URL.createObjectURL(file);
-      const slot = document.getElementById(slotId);
-      const vid  = document.getElementById(slotId + '-vid');
-      vid.src = url;
-      slot.classList.add('has-video');
-    }
-
-    /* Play / Pause toggle */
-    function togglePlay(vidId, e) {
-      e.stopPropagation();
-      const vid  = document.getElementById(vidId);
-      const icon = document.getElementById(vidId.replace('-vid', '-icon'));
-      if (vid.paused) {
-        vid.play();
-        icon.className = 'bi bi-pause-fill';
-      } else {
-        vid.pause();
-        icon.className = 'bi bi-play-fill';
-      }
-    }
-
-    /* Remove video */
-    function removeVideo(slotId, e) {
-      e.stopPropagation();
-      const slot = document.getElementById(slotId);
-      const vid  = document.getElementById(slotId + '-vid');
-      const icon = document.getElementById(slotId + '-icon');
-      vid.pause();
-      vid.src = '';
-      icon.className = 'bi bi-play-fill';
-      slot.classList.remove('has-video');
-      // Re-add file input
-      const oldInput = slot.querySelector('input[type="file"]');
-      if (oldInput) oldInput.remove();
-      const newInput = document.createElement('input');
-      newInput.type = 'file';
-      newInput.accept = 'video/*';
-      newInput.setAttribute('onchange', `loadVideo(this,'${slotId}')`);
-      slot.insertBefore(newInput, slot.firstChild);
-    }
     /* ── Hero Code Background Typewriter ───────────────────────── */
     const bgLines = [
       [ ['// ECommercePlatform.php','c-com-bg'] ],

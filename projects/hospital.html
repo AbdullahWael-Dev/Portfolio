@@ -41,7 +41,7 @@
     [data-theme="light"] .arch-highlight{ background: rgba(0,180,120,.08); border-color: rgba(0,180,120,.18); }
     [data-theme="light"] .role-table tr:hover td { background: #f0f4ff; }
     [data-theme="light"] .tech-pill     { background: rgba(0,180,120,.09); border-color: rgba(0,180,120,.2); }
-    [data-theme="light"] .gallery-slot  { background: #e8ebf4; }
+    [data-theme="light"] .project-gallery-item { background: #f8faff; border-color: rgba(0,0,0,.09); }
     [data-theme="light"] footer         { background: #ffffff; }
     [data-theme="light"] .hero-code-block {
       background: #ffffff !important;
@@ -149,16 +149,133 @@
     .section-label { font-family: 'DM Mono', monospace; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--primary-color); margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
     .section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-color), transparent); }
 
-    .gallery-slot { background: var(--surface-2); border: 2px dashed var(--border-color); border-radius: var(--radius); overflow: hidden; aspect-ratio: 16/9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .75rem; color: var(--text-faint); transition: border-color .2s, background .2s; cursor: pointer; position: relative; }
-    .gallery-slot:hover { border-color: var(--primary-color); background: var(--primary-dim); color: var(--primary-color); }
-    .gallery-slot input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-    .gallery-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius); display: none; }
-    .gallery-slot.has-image img { display: block; }
-    .gallery-slot.has-image .slot-placeholder { display: none; }
-    .slot-placeholder { display: flex; flex-direction: column; align-items: center; gap: .5rem; pointer-events: none; }
-    .gallery-slot i { font-size: 2rem; }
-    .gallery-slot-label { font-size: .78rem; font-family: 'DM Mono', monospace; letter-spacing: .06em; }
-    .gallery-caption { font-size: .78rem; color: var(--text-faint); text-align: center; margin-top: .5rem; font-family: 'DM Mono', monospace; }
+    .project-gallery-item {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      background: var(--surface-2);
+      aspect-ratio: 16 / 9;
+      position: relative;
+      margin: 0;
+      cursor: zoom-in;
+      transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+    }
+    .project-gallery-item:hover {
+      border-color: rgba(0,229,160,.45);
+      transform: translateY(-4px);
+      box-shadow: 0 18px 50px rgba(0,0,0,.35), 0 0 0 1px rgba(0,229,160,.12);
+    }
+    .project-gallery-item img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── Image lightbox ─────────────────────────────────────────── */
+    .gallery-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .28s ease, visibility .28s ease;
+    }
+    .gallery-lightbox.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+    .gallery-lightbox-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(5,8,14,.92);
+      backdrop-filter: blur(8px);
+    }
+    .gallery-lightbox-inner {
+      position: relative;
+      z-index: 1;
+      max-width: min(96vw, 1400px);
+      max-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .gallery-lightbox-inner img {
+      max-width: 100%;
+      max-height: 86vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 28px 90px rgba(0,0,0,.65);
+    }
+    .lightbox-close {
+      position: fixed;
+      top: 1.25rem;
+      right: 1.25rem;
+      z-index: 3;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(0,0,0,.5);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .lightbox-close:hover { background: var(--primary-color); color: #0a0d14; border-color: var(--primary-color); }
+    .lightbox-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.45);
+      color: #fff;
+      font-size: 1.35rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .lightbox-nav:hover { background: var(--primary-color); color: #0a0d14; border-color: var(--primary-color); }
+    .lightbox-prev { left: max(1rem, env(safe-area-inset-left)); }
+    .lightbox-next { right: max(1rem, env(safe-area-inset-right)); }
+    .lightbox-counter {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-family: 'DM Mono', monospace;
+      font-size: .8rem;
+      letter-spacing: .08em;
+      color: rgba(255,255,255,.65);
+      background: rgba(0,0,0,.4);
+      padding: .35rem .85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.1);
+    }
+    @media (max-width: 576px) {
+      .lightbox-nav { width: 42px; height: 42px; font-size: 1.1rem; }
+      .lightbox-prev { left: .5rem; }
+      .lightbox-next { right: .5rem; }
+    }
 
     .sidebar-sticky { position: sticky; top: 88px; }
 
@@ -197,6 +314,46 @@
     .cursor-h { display:inline-block;width:7px;height:1em;background:#00e5a0;vertical-align:text-bottom;animation:blinkH 1.1s step-end infinite; }
     @keyframes blinkH{0%,100%{opacity:1}50%{opacity:0}}
 
+    /* ── Page loader ───────────────────────────────────────────── */
+    #pageLoader {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      background: var(--background-color);
+      transition: opacity .5s cubic-bezier(.4,0,.2,1), visibility .5s;
+    }
+    #pageLoader.is-done {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .page-loader-spinner {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 3px solid rgba(0,229,160,.12);
+      border-top-color: var(--primary-color);
+      border-right-color: rgba(0,229,160,.38);
+      animation: pageLoaderSpin .72s linear infinite;
+    }
+    @keyframes pageLoaderSpin {
+      to { transform: rotate(360deg); }
+    }
+    .page-loader-brand {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -.03em;
+      color: var(--text-color);
+    }
+    .page-loader-brand span { color: var(--primary-color); }
+    body.page-loading { overflow: hidden; }
+
     @media (max-width:991px){.sidebar-sticky{position:static}}
     @media (max-width:768px) {
       body { padding-top: 64px; }
@@ -212,7 +369,12 @@
     }
   </style>
 </head>
-<body>
+<body class="page-loading">
+
+  <div id="pageLoader" aria-busy="true" aria-label="Loading page">
+    <div class="page-loader-spinner" role="presentation"></div>
+    <div class="page-loader-brand">aw<span>.</span></div>
+  </div>
 
   <nav class="navbar fixed-top">
     <div class="container d-flex align-items-center justify-content-between">
@@ -237,7 +399,7 @@
             <div class="meta-pill"><i class="bi bi-translate"></i><span class="meta-pill-label">Languages</span><span class="meta-pill-value">Arabic 🇸🇦 · English 🇬🇧</span></div>
           </div>
           <div class="hero-in hi5">
-            <a href="https://github.com/AbdullahWael-Dev/hospital-management-" target="_blank" rel="noopener" class="btn-gh"><i class="bi bi-github"></i> View Source Code</a>
+            <a href="https://github.com/AbdullahWael-Dev/hospital-management-system" target="_blank" rel="noopener" class="btn-gh"><i class="bi bi-github"></i> View Source Code</a>
           </div>
         </div>
         <div class="col-lg-6 d-none d-lg-block hero-in hi5">
@@ -324,23 +486,52 @@
           <p class="section-label fade-up d1 mt-4"><i class="bi bi-images"></i> Screenshots</p>
           <div class="content-card fade-up d2">
             <div class="card-title"><i class="bi bi-grid-1x2"></i> Project Gallery</div>
-            <p style="color:var(--text-muted);font-size:.85rem;" class="mb-4">Click any slot to upload a screenshot from your project.</p>
-            <div class="row g-3">
-              <div class="col-md-6">
-                <div class="gallery-slot" id="slot1"><input type="file" accept="image/*" onchange="loadImg(this,'slot1')"><div class="slot-placeholder"><i class="bi bi-image"></i><span class="gallery-slot-label">Dashboard</span></div><img id="slot1-img" src="" alt=""/></div>
-                <p class="gallery-caption">Admin Dashboard</p>
+            <p style="color:var(--text-muted);font-size:.85rem;" class="mb-4">Screens from the Hospital Management System — click an image to enlarge. Use the side arrows or keyboard ← → to browse.</p>
+            <div class="row g-3 project-gallery">
+              <div class="col-md-6 col-lg-4">
+                <figure class="project-gallery-item mb-0"><img src="hospital_image/scrnli_59RpGu8O2YgHhF.png" alt="Hospital system screenshot" loading="lazy"/></figure>
               </div>
-              <div class="col-md-6">
-                <div class="gallery-slot" id="slot2"><input type="file" accept="image/*" onchange="loadImg(this,'slot2')"><div class="slot-placeholder"><i class="bi bi-image"></i><span class="gallery-slot-label">Appointments</span></div><img id="slot2-img" src="" alt=""/></div>
-                <p class="gallery-caption">Appointment Booking</p>
+              <div class="col-md-6 col-lg-4">
+                <figure class="project-gallery-item mb-0"><img src="hospital_image/scrnli_5cWqPq3fIYWKiX.png" alt="Hospital system screenshot" loading="lazy"/></figure>
               </div>
-              <div class="col-md-6">
-                <div class="gallery-slot" id="slot3"><input type="file" accept="image/*" onchange="loadImg(this,'slot3')"><div class="slot-placeholder"><i class="bi bi-image"></i><span class="gallery-slot-label">Patient Records</span></div><img id="slot3-img" src="" alt=""/></div>
-                <p class="gallery-caption">Patient Records</p>
+              <div class="col-md-6 col-lg-4">
+                <figure class="project-gallery-item mb-0"><img src="hospital_image/scrnli_DrZVur3ofyWz2b.png" alt="Hospital system screenshot" loading="lazy"/></figure>
               </div>
-              <div class="col-md-6">
-                <div class="gallery-slot" id="slot4"><input type="file" accept="image/*" onchange="loadImg(this,'slot4')"><div class="slot-placeholder"><i class="bi bi-image"></i><span class="gallery-slot-label">Billing</span></div><img id="slot4-img" src="" alt=""/></div>
-                <p class="gallery-caption">Billing &amp; Invoices</p>
+              <div class="col-md-6 col-lg-4">
+                <figure class="project-gallery-item mb-0"><img src="hospital_image/scrnli_hcc6rIsZZYf2Ua.png" alt="Hospital system screenshot" loading="lazy"/></figure>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <figure class="project-gallery-item mb-0"><img src="hospital_image/scrnli_HL0Y9rshEYFqQl.png" alt="Hospital system screenshot" loading="lazy"/></figure>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <figure class="project-gallery-item mb-0"><img src="hospital_image/scrnli_Hs53rhwKEYZ04t.png" alt="Hospital system screenshot" loading="lazy"/></figure>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <figure class="project-gallery-item mb-0"><img src="hospital_image/scrnli_LNl3k61HYyxGup.png" alt="Hospital system screenshot" loading="lazy"/></figure>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <figure class="project-gallery-item mb-0"><img src="hospital_image/scrnli_MB6lHLqEZYIg92.png" alt="Hospital system screenshot" loading="lazy"/></figure>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <figure class="project-gallery-item mb-0"><img src="hospital_image/scrnli_MSvPl9e32yXu9B.png" alt="Hospital system screenshot" loading="lazy"/></figure>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <figure class="project-gallery-item mb-0"><img src="hospital_image/scrnli_of22Bdl4kyI2TO.png" alt="Hospital system screenshot" loading="lazy"/></figure>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <figure class="project-gallery-item mb-0"><img src="hospital_image/scrnli_P8yvyq3IMyHBhP.png" alt="Hospital system screenshot" loading="lazy"/></figure>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <figure class="project-gallery-item mb-0"><img src="hospital_image/scrnli_VvgDHy8t5YCFg7.png" alt="Hospital system screenshot" loading="lazy"/></figure>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <figure class="project-gallery-item mb-0"><img src="hospital_image/scrnli_YP7GwqIWDyGRry.png" alt="Hospital system screenshot" loading="lazy"/></figure>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <figure class="project-gallery-item mb-0"><img src="hospital_image/scrnli_YxocifPbiYG1K9.png" alt="Hospital system screenshot" loading="lazy"/></figure>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <figure class="project-gallery-item mb-0"><img src="hospital_image/scrnli_zFAMhQbEkYy6n0.png" alt="Hospital system screenshot" loading="lazy"/></figure>
               </div>
             </div>
           </div>
@@ -380,12 +571,23 @@
             </div>
             <p class="section-label fade-up d3 mt-3"><i class="bi bi-github"></i> Source</p>
             <div class="content-card fade-up d4">
-              <a href="https://github.com/AbdullahWael-Dev/hospital-management-" target="_blank" rel="noopener" class="btn-gh w-100 justify-content-center"><i class="bi bi-github"></i> View on GitHub</a>
+              <a href="https://github.com/AbdullahWael-Dev/hospital-management-system" target="_blank" rel="noopener" class="btn-gh w-100 justify-content-center"><i class="bi bi-github"></i> View on GitHub</a>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <div id="galleryLightbox" class="gallery-lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Image gallery">
+    <div class="gallery-lightbox-backdrop"></div>
+    <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+    <button type="button" class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous image"><i class="bi bi-chevron-left"></i></button>
+    <button type="button" class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next image"><i class="bi bi-chevron-right"></i></button>
+    <div class="gallery-lightbox-inner">
+      <img id="lightboxImg" src="" alt=""/>
+    </div>
+    <div class="lightbox-counter" id="lightboxCounter"></div>
   </div>
 
   <button id="scrollTop" aria-label="Back to top"><i class="bi bi-arrow-up"></i></button>
@@ -394,6 +596,22 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    (function () {
+      function hideLoader() {
+        var el = document.getElementById('pageLoader');
+        if (el) el.classList.add('is-done');
+        document.body.classList.remove('page-loading');
+      }
+      function scheduleHide() {
+        requestAnimationFrame(function () { setTimeout(hideLoader, 200); });
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', scheduleHide);
+      } else {
+        scheduleHide();
+      }
+    })();
+
     document.getElementById('footer-copy').innerHTML = `© ${new Date().getFullYear()} <a href="../index.html">Abdallah Wael</a> — Built with Laravel spirit.`;
     const scrollTopBtn = document.getElementById('scrollTop');
     window.addEventListener('scroll', () => { scrollTopBtn.classList.toggle('visible', window.scrollY > 400); }, { passive: true });
@@ -404,7 +622,58 @@
     document.getElementById('themeToggle').addEventListener('click',()=>applyTheme(root.getAttribute('data-theme')==='dark'?'light':'dark'));
     const obs = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.1});
     document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
-    function loadImg(input,slotId){const file=input.files[0];if(!file)return;const reader=new FileReader();reader.onload=e=>{document.getElementById(slotId).classList.add('has-image');document.getElementById(slotId+'-img').src=e.target.result;};reader.readAsDataURL(file);}
+
+    (function galleryLightbox(){
+      const modal = document.getElementById('galleryLightbox');
+      const imgEl = document.getElementById('lightboxImg');
+      const btnPrev = document.getElementById('lightboxPrev');
+      const btnNext = document.getElementById('lightboxNext');
+      const btnClose = document.getElementById('lightboxClose');
+      const counter = document.getElementById('lightboxCounter');
+      const backdrop = modal && modal.querySelector('.gallery-lightbox-backdrop');
+      let urls = [];
+      let idx = 0;
+      function show() {
+        if (!urls.length) return;
+        idx = (idx + urls.length) % urls.length;
+        imgEl.src = urls[idx];
+        counter.textContent = (idx + 1) + ' / ' + urls.length;
+      }
+      function open(startIdx, list) {
+        urls = list;
+        idx = startIdx;
+        show();
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        imgEl.removeAttribute('src');
+      }
+      document.querySelectorAll('.project-gallery .project-gallery-item img').forEach(function(thumb) {
+        thumb.addEventListener('click', function() {
+          const gallery = thumb.closest('.project-gallery');
+          const imgs = gallery.querySelectorAll('.project-gallery-item img');
+          const list = Array.prototype.map.call(imgs, function(i) { return i.getAttribute('src'); });
+          const i = Array.prototype.indexOf.call(imgs, thumb);
+          open(i, list);
+        });
+      });
+      btnPrev.addEventListener('click', function(e) { e.stopPropagation(); idx--; show(); });
+      btnNext.addEventListener('click', function(e) { e.stopPropagation(); idx++; show(); });
+      btnClose.addEventListener('click', close);
+      backdrop.addEventListener('click', close);
+      document.addEventListener('keydown', function(e) {
+        if (!modal.classList.contains('is-open')) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowLeft') { idx--; show(); }
+        if (e.key === 'ArrowRight') { idx++; show(); }
+      });
+    })();
+
     (function typeHMS(){
       const wrapper=document.getElementById('hero-code-hms');if(!wrapper)return;
       const cursor=document.createElement('span');cursor.className='cursor-h';
